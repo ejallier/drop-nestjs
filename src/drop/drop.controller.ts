@@ -1,15 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DropService } from './drop.service';
-import { CreateDropDto } from './dto/create-drop.dto';
-import { UpdateDropDto } from './dto/update-drop.dto';
+import { Controller, Get, Post, Body } from '@nestjs/common';
+import { DropService} from './drop.service';
+import { CreateDropDto } from "drop-shared";
 
 @Controller('drop')
 export class DropController {
   constructor(private readonly dropService: DropService) {}
 
   @Post()
-  create(@Body() createDropDto: CreateDropDto) {
-    return this.dropService.create(createDropDto);
+  create(@Body() drop: CreateDropDto) {
+    return this.dropService.create(drop);
   }
 
   @Get()
@@ -17,18 +16,23 @@ export class DropController {
     return this.dropService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.dropService.findOne(+id);
-  }
+  // @Post('many')
+  // createMany(@Body() drops: Drop[]) {
+  //   return this.dropService.createMany(drops);
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDropDto: UpdateDropDto) {
-    return this.dropService.update(+id, updateDropDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.dropService.remove(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.dropService.findOne(+id);
+  // }
+  //
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() drop: IDrop) {
+  //   return this.dropService.update(+id, drop);
+  // }
+  //
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.dropService.remove(+id);
+  // }
 }

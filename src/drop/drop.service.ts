@@ -1,26 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { CreateDropDto } from './dto/create-drop.dto';
-import { UpdateDropDto } from './dto/update-drop.dto';
+import {  Injectable } from '@nestjs/common';
+import {  Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Drop } from "src/drop/entities/drop.entity";
+import { CreateDropDto } from "src/drop/dto/create-drop.dto";
+
+export interface IDrop {
+    id?: number;
+    title: string;
+    latitude: number;
+    longitude: number;
+    user:  number;
+}
 
 @Injectable()
 export class DropService {
-  create(createDropDto: CreateDropDto) {
-    return 'This action adds a new drop';
-  }
 
-  findAll() {
-    return `This action returns all drop`;
-  }
+    constructor(
+        @InjectRepository(Drop)
+        private dropRepository: Repository<Drop>
+    ) {}
 
-  findOne(id: number) {
-    return `This action returns a #${id} drop`;
-  }
 
-  update(id: number, updateDropDto: UpdateDropDto) {
-    return `This action updates a #${id} drop`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} drop`;
-  }
+    create(drop: CreateDropDto) {
+        return this.dropRepository.save(drop)
+    }
+    findAll(): Promise<CreateDropDto[]> {
+        return this.dropRepository.find(
+            {select: ["id", "title", "latitude", "longitude", "user"]}
+        );
+    }
 }

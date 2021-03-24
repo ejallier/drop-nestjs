@@ -5,6 +5,7 @@ declare const module: any;
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+    app.enableCors(); // add this line to allow multiple local apps
     await app.listen(3000);
 
     if (module.hot) {

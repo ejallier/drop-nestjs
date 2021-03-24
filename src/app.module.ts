@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection, getConnectionOptions } from "typeorm";
-import { DatabaseModule } from "src/database/database.module";
-import { DropModule } from './drop/drop.module';
+// import { DropModule } from './drop/drop.module';
+import { TypeOrmModule } from "@nestjs/typeorm";
+// import { Drop } from "src/drop/entities/drop.entity";
+import { UsersModule } from './users/users.module';
+import { User } from "src/users/user.entity";
+import { DropModule } from "src/drop/drop.module";
+import { Drop } from "src/drop/entities/drop.entity";
 
 @Module({
     imports: [
-        // DropModule,
         TypeOrmModule.forRoot({
             type: 'mysql',
             host: 'localhost',
@@ -16,16 +19,16 @@ import { DropModule } from './drop/drop.module';
             username: 'user',
             password: 'toto',
             database: 'drop',
-            entities: [
-                __dirname + '/../**/*.entity{.ts,.js}',
-            ],
+            // entities: [User, Drop],
             synchronize: true,
+            autoLoadEntities: true,
         }),
+        UsersModule,
         DropModule,
     ],
-    controllers: [AppController],
-    providers: [AppService],
+    // controllers: [AppController],
+    // providers: [AppService],
 })
 export class AppModule {
-    constructor(private connection: Connection) {}
+    // constructor(private connection: Connection) {}
 }
